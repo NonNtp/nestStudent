@@ -7,7 +7,7 @@ export class StudentService {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async selectAll() {
-    return this.connection.query('SELECT * FROM student');
+    return this.connection.query('SELECT * FROM student ORDER BY std_name ASC');
   }
 
   async selectTwo() {
@@ -22,7 +22,7 @@ export class StudentService {
 
   async selectJoin() {
     return this.connection.query(
-      'SELECT * FROM course JOIN register ON register.course_id = course.course_id WHERE std_id ="5001100348"',
+      'SELECT course.course_id , title , credit FROM course JOIN register ON  course.course_id = register.course_id   WHERE std_id ="5001100348"',
     );
   }
 
@@ -34,13 +34,13 @@ export class StudentService {
 
   async selectCountRegister() {
     return this.connection.query(
-      'SELECT register.course_id , count(*) AS studentCount FROM register GROUP BY register.course_id',
+      'SELECT register.course_id , count(register.std_id) AS studentNumber FROM register GROUP BY register.course_id',
     );
   }
 
   async selectJoinCourse() {
     return this.connection.query(
-      'SELECT student.std_name , register.course_id FROM student JOIN register ON student.std_id = register.std_id WHERE register.course_id = "322236"',
+      'SELECT student.std_name  FROM student JOIN register ON student.std_id = register.std_id WHERE register.course_id = "322236"',
     );
   }
 }
